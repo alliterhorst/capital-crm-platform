@@ -1,0 +1,47 @@
+{
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "files.eol": "\n",
+  "cSpell.language": "en,pt-BR",
+  "cSpell.words": [
+    "nestjs",
+    "typeorm",
+    "vite",
+    "monorepo",
+    "shadcn",
+    "zustand",
+    "axios",
+    "postgres",
+    "healthz",
+    "dto"
+  ],
+  "cSpell.ignorePaths": [
+    "package-lock.json",
+    "node_modules",
+    "dist",
+    "tmp",
+    "coverage",
+    ".git/objects",
+    ".vscode",
+    "**/*.min.js",
+    "**/*.map"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "editor.rulers": [100],
+  "editor.wordWrapColumn": 100,
+  "editor.wordWrap": "wordWrapColumn",
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": false,
+    "dist": false,
+    "tmp": false
+  }
+}

@@ -1,3 +1,4 @@
+import { JSX } from 'react';
 /*
  * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  This is a starter component and can be deleted.
@@ -5,7 +6,7 @@
  Delete this file and get started with your project!
  * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  */
-export function NxWelcome({ title }: { title: string }) {
+export function NxWelcome({ title }: { title: string }): JSX.Element {
   return (
     <>
       <style
@@ -689,9 +690,7 @@ export function NxWelcome({ title }: { title: string }) {
                 </svg>
                 <span>
                   Install Nx Console for JetBrains
-                  <span>
-                    Available for WebStorm, Intellij IDEA Ultimate and more!
-                  </span>
+                  <span>Available for WebStorm, Intellij IDEA Ultimate and more!</span>
                 </span>
               </a>
               <div id="nx-cloud" className="rounded shadow">
@@ -718,10 +717,7 @@ export function NxWelcome({ title }: { title: string }) {
                     <span>Enable faster CI & better DX</span>
                   </h2>
                 </div>
-                <p>
-                  You can activate distributed tasks executions and caching by
-                  running:
-                </p>
+                <p>You can activate distributed tasks executions and caching by running:</p>
                 <pre>nx connect</pre>
                 <a
                   href="https://nx.dev/nx-cloud?utm_source=nx-project"
