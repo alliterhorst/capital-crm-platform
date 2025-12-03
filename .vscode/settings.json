@@ -4,16 +4,19 @@
   "files.eol": "\n",
   "cSpell.language": "en,pt-BR",
   "cSpell.words": [
+    "axios",
+    "dto",
+    "healthcheck",
+    "healthz",
+    "isready",
+    "monorepo",
     "nestjs",
+    "postgres",
+    "postgresql",
+    "shadcn",
     "typeorm",
     "vite",
-    "monorepo",
-    "shadcn",
-    "zustand",
-    "axios",
-    "postgres",
-    "healthz",
-    "dto"
+    "zustand"
   ],
   "cSpell.ignorePaths": [
     "package-lock.json",
@@ -43,5 +46,12 @@
     "**/node_modules": false,
     "dist": false,
     "tmp": false
+  },
+  "[yaml]": {
+    "editor.formatOnSave": false,
+    "editor.defaultFormatter": null
+  },
+  "[dockercompose]": {
+    "editor.formatOnSave": false
   }
 }
