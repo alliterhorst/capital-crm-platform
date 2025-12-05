@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Env, validate } from '../config/env.validation';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
@@ -23,9 +24,10 @@ import { AppService } from './app.service';
         password: configService.get('DB_PASSWORD', { infer: true }),
         database: configService.get('DB_DATABASE', { infer: true }),
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: false,
       }),
     }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

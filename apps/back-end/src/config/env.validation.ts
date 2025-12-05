@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { MESSAGES_HELPER } from '../common/constants/messages.helper';
 
-const { IS_NOT_EMPTY, IS_NUMBER, MIN_LENGTH } = MESSAGES_HELPER.VALIDATION;
+const { IS_NOT_EMPTY, IS_NUMBER, MIN_LENGTH, IS_EMAIL } = MESSAGES_HELPER.VALIDATION;
 
 const envSchema = z.object({
   DB_HOST: z.string(IS_NOT_EMPTY),
@@ -9,6 +9,8 @@ const envSchema = z.object({
   DB_USERNAME: z.string(IS_NOT_EMPTY),
   DB_PASSWORD: z.string(IS_NOT_EMPTY),
   DB_DATABASE: z.string(IS_NOT_EMPTY),
+  ADMIN_EMAIL: z.email(IS_EMAIL),
+  ADMIN_PASSWORD: z.string(IS_NOT_EMPTY),
 });
 
 export type Env = z.infer<typeof envSchema>;

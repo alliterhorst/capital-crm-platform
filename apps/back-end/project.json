@@ -65,6 +65,67 @@
       "options": {
         "passWithNoTests": true
       }
+    },
+    "docker-up": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker-compose up -d --build",
+        "cwd": "apps/back-end"
+      }
+    },
+    "docker-down": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker-compose down",
+        "cwd": "apps/back-end"
+      }
+    },
+    "docker-logs": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker-compose logs -f",
+        "cwd": "apps/back-end"
+      }
+    },
+    "typeorm": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "typeorm-ts-node-commonjs -d src/config/typeorm.config.ts",
+        "cwd": "apps/back-end",
+        "env": {
+          "TS_NODE_PROJECT": "tsconfig.typeorm.json"
+        }
+      }
+    },
+    "migration-generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "typeorm-ts-node-commonjs -d src/config/typeorm.config.ts migration:generate src/database/migrations/{args.name}",
+        "cwd": "apps/back-end",
+        "env": {
+          "TS_NODE_PROJECT": "tsconfig.typeorm.json"
+        }
+      }
+    },
+    "migration-run": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "typeorm-ts-node-commonjs -d src/config/typeorm.config.ts migration:run",
+        "cwd": "apps/back-end",
+        "env": {
+          "TS_NODE_PROJECT": "tsconfig.typeorm.json"
+        }
+      }
+    },
+    "seed-run": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "ts-node src/database/seeds/main.seed.ts",
+        "cwd": "apps/back-end",
+        "env": {
+          "TS_NODE_PROJECT": "tsconfig.typeorm.json"
+        }
+      }
     }
   }
 }
