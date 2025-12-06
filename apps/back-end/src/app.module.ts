@@ -14,6 +14,8 @@ import { TraceIdInterceptor } from './common/interceptors/trace-id.interceptor';
 import AppDataSource from './config/typeorm.config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
+import { ClientsModule } from './clients/clients.module';
+import { MetricsModule } from './metrics/metrics.module';
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { AuthModule } from './auth/auth.module';
     }),
     AuthModule,
     UsersModule,
+    ClientsModule,
+    MetricsModule,
   ],
   controllers: [AppController],
   providers: [
