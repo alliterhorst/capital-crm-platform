@@ -1,16 +1,22 @@
 import AppDataSource from '../../config/typeorm.config';
 import { seedAdmin } from './admin.seeder';
+import { seedLogger } from './seed.logger';
 
 async function bootstrap(): Promise<void> {
-  const dataSource = await AppDataSource.initialize();
+  seedLogger.info('Starting seed execution...');
 
   try {
+    seedLogger.info('Connecting to database...');
+    const dataSource = await AppDataSource.initialize();
+
+    seedLogger.info('Running Admin Seeder...');
     await seedAdmin(dataSource);
-  } catch (error) {
-    console.error('Seeding Error:', error);
-    process.exit(1);
-  } finally {
+
+    seedLogger.info('Seed execution completed successfully.');
     await dataSource.destroy();
+  } catch (error) {
+    seedLogger.error({ err: error }, 'Seed execution failed.');
+    process.exit(1);
   }
 }
 

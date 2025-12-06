@@ -66,6 +66,41 @@
         "passWithNoTests": true
       }
     },
+    "db-up": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker-compose up -d postgres",
+        "cwd": "apps/back-end"
+      }
+    },
+    "db-stop": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker-compose stop postgres",
+        "cwd": "apps/back-end"
+      }
+    },
+    "db-nuke": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker-compose down -v",
+        "cwd": "apps/back-end"
+      }
+    },
+    "docker-api-rebuild": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker-compose up -d --no-deps --build api",
+        "cwd": "apps/back-end"
+      }
+    },
+    "docker-api-stop": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker-compose stop api",
+        "cwd": "apps/back-end"
+      }
+    },
     "docker-up": {
       "executor": "nx:run-commands",
       "options": {

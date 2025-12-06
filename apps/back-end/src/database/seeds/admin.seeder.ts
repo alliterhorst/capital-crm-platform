@@ -2,6 +2,7 @@ import * as bcrypt from 'bcrypt';
 import { DataSource } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { envs } from '../../config/envs';
+import { seedLogger } from './seed.logger';
 
 export async function seedAdmin(dataSource: DataSource): Promise<void> {
   const userRepository = dataSource.getRepository(User);
@@ -14,14 +15,13 @@ export async function seedAdmin(dataSource: DataSource): Promise<void> {
     const passwordHash = await bcrypt.hash(envs.ADMIN_PASSWORD, salt);
 
     const admin = userRepository.create({
-      name: 'Admin System',
       email: adminEmail,
       password: passwordHash,
     });
 
     await userRepository.save(admin);
-    console.log('Seed: Admin user created successfully.');
+    seedLogger.info('Seed: Admin user created successfully.');
   } else {
-    console.log('Seed: Admin user already exists.');
+    seedLogger.info('Seed: Admin user already exists.');
   }
 }

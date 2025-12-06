@@ -11,6 +11,14 @@ export const MESSAGES_HELPER = {
     LOGIN_SUCCESS: 'Login realizado com sucesso.',
     INVALID_CREDENTIALS: 'Credenciais inválidas. Verifique seu e-mail e senha.',
     UNAUTHORIZED: 'Acesso não autorizado.',
+    NOT_FOUND: 'Usuário não encontrado no sistema.',
+  },
+  SWAGGER: {
+    AUTH_TAG: 'Autenticação',
+    LOGIN_SUMMARY: 'Realizar login e obter token JWT',
+    LOGIN_SUCCESS_DESC: 'Token gerado com sucesso.',
+    LOGIN_UNAUTHORIZED_DESC: 'Falha na autenticação (usuário ou senha incorretos).',
+    LOGIN_BAD_REQUEST: 'Dados de entrada inválidos.',
   },
   DATABASE: {
     CONNECT_SUCCESS: 'Conexão com o banco de dados estabelecida.',

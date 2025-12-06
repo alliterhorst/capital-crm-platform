@@ -15,6 +15,7 @@
     "postgresql",
     "shadcn",
     "typeorm",
+    "uuidv",
     "vite",
     "zustand"
   ],
