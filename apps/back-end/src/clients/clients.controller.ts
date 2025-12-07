@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -19,6 +20,8 @@ import { Client } from './entities/client.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { MESSAGES_HELPER } from '../common/constants/messages.helper';
 import { ApiBaseAuthResponses } from '../common/decorators/api-base-responses.decorator';
+import { PaginatedClientsResultDto } from './dto/paginated-clients.dto';
+import { PaginationDto } from '../common/dto/pagination.dto';
 
 @ApiTags(MESSAGES_HELPER.SWAGGER.CLIENTS_TAG)
 @ApiBearerAuth()
@@ -44,9 +47,10 @@ export class ClientsController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: MESSAGES_HELPER.CLIENTS.FETCH_ALL_SUCCESS,
+    type: PaginatedClientsResultDto,
   })
-  findAll(): Promise<Client[]> {
-    return this.clientsService.findAll();
+  findAll(@Query() paginationDto: PaginationDto): Promise<PaginatedClientsResultDto> {
+    return this.clientsService.findAll(paginationDto);
   }
 
   @Get(':id')

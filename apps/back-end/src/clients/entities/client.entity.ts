@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ClientMetric } from '../../metrics/entities/client-metric.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'clients' })
 export class Client {
@@ -29,6 +30,7 @@ export class Client {
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
   updatedAt!: Date;
 
+  @Exclude()
   @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp', nullable: true })
   deletedAt?: Date;
 

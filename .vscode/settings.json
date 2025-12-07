@@ -13,10 +13,12 @@
     "nestjs",
     "postgres",
     "postgresql",
+    "prometheus",
     "shadcn",
     "typeorm",
     "uuidv",
     "vite",
+    "willsoto",
     "zustand"
   ],
   "cSpell.ignorePaths": [

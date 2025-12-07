@@ -1,14 +1,19 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { envs } from './config/envs';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule, { bufferLogs: true });
+  const app = await NestFactory.create(AppModule, { bufferLogs: true, cors: true });
 
   app.useLogger(app.get(Logger));
-  app.useGlobalInterceptors(new LoggerErrorInterceptor());
+  app.useGlobalInterceptors(
+    new LoggerErrorInterceptor(),
+    new ClassSerializerInterceptor(app.get(Reflector)),
+  );
+  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
 
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);

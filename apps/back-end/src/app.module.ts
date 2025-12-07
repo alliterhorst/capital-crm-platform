@@ -16,6 +16,8 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
 import { ClientsModule } from './clients/clients.module';
 import { MetricsModule } from './metrics/metrics.module';
+import { HealthModule } from './health/health.module';
+import { PrometheusController, PrometheusModule } from '@willsoto/nestjs-prometheus';
 
 @Module({
   imports: [
@@ -33,6 +35,13 @@ import { MetricsModule } from './metrics/metrics.module';
       },
     }),
     LoggerModule.forRoot(loggerConfig),
+    PrometheusModule.register({
+      path: '/metrics',
+      controller: PrometheusController,
+      defaultMetrics: {
+        enabled: true,
+      },
+    }),
     TypeOrmModule.forRoot({
       ...AppDataSource.options,
       entities: undefined,
@@ -42,6 +51,7 @@ import { MetricsModule } from './metrics/metrics.module';
     UsersModule,
     ClientsModule,
     MetricsModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [

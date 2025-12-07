@@ -6,6 +6,8 @@ import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { MESSAGES_HELPER } from '../common/constants/messages.helper';
 import { MetricsService } from '../metrics/metrics.service';
+import { PaginationDto } from '../common/dto/pagination.dto';
+import { PaginatedClientsResultDto } from './dto/paginated-clients.dto';
 
 @Injectable()
 export class ClientsService {
@@ -29,12 +31,29 @@ export class ClientsService {
     return savedClient;
   }
 
-  async findAll(): Promise<Client[]> {
-    this.logger.log('Fetching all clients');
-    return this.clientRepository.find({
+  async findAll(paginationDto: PaginationDto): Promise<PaginatedClientsResultDto> {
+    const { page = 1, limit = 10 } = paginationDto;
+    const skip = (page - 1) * limit;
+
+    this.logger.log(`Fetching clients page ${page} with limit ${limit}`);
+
+    const [data, total] = await this.clientRepository.findAndCount({
       order: { createdAt: 'DESC' },
-      relations: ['metric'],
+      take: limit,
+      skip: skip,
     });
+
+    const lastPage = Math.ceil(total / limit);
+
+    return {
+      data,
+      meta: {
+        total,
+        page,
+        lastPage,
+        limit,
+      },
+    };
   }
 
   async findOne(id: string): Promise<Client> {

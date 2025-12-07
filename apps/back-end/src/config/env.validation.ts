@@ -11,6 +11,10 @@ const envSchema = z.object({
     .string()
     .default('false')
     .transform((val) => val === 'true'),
+  SEED_MOCK_DATA: z
+    .string()
+    .transform((val) => val === 'true')
+    .default(false),
   DB_HOST: z.string(IS_NOT_EMPTY),
   DB_PORT: z.coerce.number(IS_NUMBER).min(1, MIN_LENGTH(1)),
   DB_USERNAME: z.string(IS_NOT_EMPTY),

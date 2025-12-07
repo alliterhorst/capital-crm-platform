@@ -1,7 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
+import { MESSAGES_HELPER } from '../common/constants/messages.helper';
 
 @Injectable()
 export class UsersService {
@@ -19,5 +20,19 @@ export class UsersService {
       where: { email },
       select: ['id', 'email', 'password', 'name'],
     });
+  }
+
+  async updateName(id: string, name: string): Promise<User> {
+    this.logger.log(`Updating user name for ID: ${id}`);
+
+    const user = await this.userRepository.findOne({ where: { id } });
+
+    if (!user) {
+      this.logger.warn(`User not found for update: ${id}`);
+      throw new NotFoundException(MESSAGES_HELPER.AUTH.NOT_FOUND);
+    }
+
+    user.name = name;
+    return this.userRepository.save(user);
   }
 }
