@@ -14,7 +14,7 @@ export class AuthController {
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: MESSAGES_HELPER.SWAGGER.LOGIN_SUMMARY })
+  @ApiOperation({ summary: MESSAGES_HELPER.SWAGGER.LOGIN_SUMMARY, operationId: 'login' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: MESSAGES_HELPER.SWAGGER.LOGIN_SUCCESS_DESC,
@@ -35,7 +35,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Obter dados do usuário logado' })
+  @ApiOperation({ summary: 'Obter dados do usuário logado', operationId: 'getCurrentUserProfile' })
   @ApiResponse({ status: 200, description: 'Dados do perfil recuperados.' })
   @ApiResponse({ status: 401, description: 'Não autorizado.' })
   getProfile(@Req() req: RequestWithUser): AuthenticatedUser {

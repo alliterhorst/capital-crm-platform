@@ -31,8 +31,11 @@ export class ClientsController {
   constructor(private readonly clientsService: ClientsService) {}
 
   @Post()
-  @ApiOperation({ summary: MESSAGES_HELPER.SWAGGER.CLIENT_CREATE_SUMMARY })
-  @ApiBaseAuthResponses()
+  @ApiOperation({
+    summary: MESSAGES_HELPER.SWAGGER.CLIENT_CREATE_SUMMARY,
+    operationId: 'createClient',
+  })
+  @ApiBaseAuthResponses({ notFound: false })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: MESSAGES_HELPER.CLIENTS.CREATED,
@@ -42,8 +45,11 @@ export class ClientsController {
   }
 
   @Get()
-  @ApiOperation({ summary: MESSAGES_HELPER.SWAGGER.CLIENT_FIND_ALL_SUMMARY })
-  @ApiBaseAuthResponses()
+  @ApiOperation({
+    summary: MESSAGES_HELPER.SWAGGER.CLIENT_FIND_ALL_SUMMARY,
+    operationId: 'listClients',
+  })
+  @ApiBaseAuthResponses({ notFound: false })
   @ApiResponse({
     status: HttpStatus.OK,
     description: MESSAGES_HELPER.CLIENTS.FETCH_ALL_SUCCESS,
@@ -54,7 +60,10 @@ export class ClientsController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: MESSAGES_HELPER.SWAGGER.CLIENT_FIND_ONE_SUMMARY })
+  @ApiOperation({
+    summary: MESSAGES_HELPER.SWAGGER.CLIENT_FIND_ONE_SUMMARY,
+    operationId: 'getClientById',
+  })
   @ApiBaseAuthResponses()
   @ApiResponse({
     status: HttpStatus.OK,
@@ -69,7 +78,10 @@ export class ClientsController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: MESSAGES_HELPER.SWAGGER.CLIENT_UPDATE_SUMMARY })
+  @ApiOperation({
+    summary: MESSAGES_HELPER.SWAGGER.CLIENT_UPDATE_SUMMARY,
+    operationId: 'updateClient',
+  })
   @ApiBaseAuthResponses()
   @ApiResponse({
     status: HttpStatus.OK,
@@ -88,7 +100,10 @@ export class ClientsController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ summary: MESSAGES_HELPER.SWAGGER.CLIENT_DELETE_SUMMARY })
+  @ApiOperation({
+    summary: MESSAGES_HELPER.SWAGGER.CLIENT_DELETE_SUMMARY,
+    operationId: 'deleteClient',
+  })
   @ApiBaseAuthResponses()
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,

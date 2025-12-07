@@ -20,7 +20,7 @@ export class HealthController {
 
   @Get()
   @HealthCheck()
-  @ApiOperation({ summary: MESSAGES_HELPER.SWAGGER.HEALTH_SUMMARY })
+  @ApiOperation({ summary: MESSAGES_HELPER.SWAGGER.HEALTH_SUMMARY, operationId: 'checkHealth' })
   check(): Promise<HealthCheckResult> {
     return this.health.check([
       () => this.db.pingCheck('database'),

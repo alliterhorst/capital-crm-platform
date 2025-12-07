@@ -1,0 +1,1711 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api": {
+      "get": {
+        "operationId": "AppController_getData",
+        "parameters": [
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "required": false,
+            "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "550e8400-e29b-41d4-a716-446655440000"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "App"
+        ]
+      }
+    },
+    "/api/metrics": {
+      "get": {
+        "operationId": "PrometheusController_index",
+        "parameters": [
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "required": false,
+            "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "550e8400-e29b-41d4-a716-446655440000"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Prometheus"
+        ]
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "operationId": "login",
+        "parameters": [
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "required": false,
+            "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "550e8400-e29b-41d4-a716-446655440000"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token gerado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados de entrada inválidos.",
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falha na autenticação (usuário ou senha incorretos).",
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Realizar login e obter token JWT",
+        "tags": [
+          "Autenticação"
+        ]
+      }
+    },
+    "/api/auth/profile": {
+      "get": {
+        "operationId": "getCurrentUserProfile",
+        "parameters": [
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "required": false,
+            "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "550e8400-e29b-41d4-a716-446655440000"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dados do perfil recuperados.",
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado.",
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Obter dados do usuário logado",
+        "tags": [
+          "Autenticação"
+        ]
+      }
+    },
+    "/api/users/profile": {
+      "patch": {
+        "operationId": "updateUserProfile",
+        "parameters": [
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "required": false,
+            "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "550e8400-e29b-41d4-a716-446655440000"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Nome do perfil atualizado com sucesso.",
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição inválida (Erro de validação de dados).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado (Token JWT inválido ou ausente).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerErrorResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Atualizar nome do usuário logado",
+        "tags": [
+          "Usuários"
+        ]
+      }
+    },
+    "/api/clients": {
+      "post": {
+        "operationId": "createClient",
+        "parameters": [
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "required": false,
+            "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "550e8400-e29b-41d4-a716-446655440000"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateClientDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Cliente cadastrado com sucesso.",
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição inválida (Erro de validação de dados).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado (Token JWT inválido ou ausente).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerErrorResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Cadastrar novo cliente",
+        "tags": [
+          "Clientes"
+        ]
+      },
+      "get": {
+        "operationId": "listClients",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Número da página (início em 1)",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Itens por página",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "required": false,
+            "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "550e8400-e29b-41d4-a716-446655440000"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de clientes recuperada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedClientsResultDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição inválida (Erro de validação de dados).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado (Token JWT inválido ou ausente).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerErrorResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Listar todos os clientes ativos",
+        "tags": [
+          "Clientes"
+        ]
+      }
+    },
+    "/api/clients/{id}": {
+      "get": {
+        "operationId": "getClientById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "required": false,
+            "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "550e8400-e29b-41d4-a716-446655440000"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dados do cliente recuperados com sucesso.",
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição inválida (Erro de validação de dados).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado (Token JWT inválido ou ausente).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso não encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerErrorResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Buscar detalhes de um cliente por ID",
+        "tags": [
+          "Clientes"
+        ]
+      },
+      "patch": {
+        "operationId": "updateClient",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "required": false,
+            "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "550e8400-e29b-41d4-a716-446655440000"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateClientDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dados do cliente atualizados com sucesso.",
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição inválida (Erro de validação de dados).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado (Token JWT inválido ou ausente).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso não encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerErrorResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Atualizar dados financeiros ou cadastrais do cliente",
+        "tags": [
+          "Clientes"
+        ]
+      },
+      "delete": {
+        "operationId": "deleteClient",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "required": false,
+            "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "550e8400-e29b-41d4-a716-446655440000"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Cliente removido com sucesso.",
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição inválida (Erro de validação de dados).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado (Token JWT inválido ou ausente).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso não encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerErrorResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Remover cliente (Soft Delete)",
+        "tags": [
+          "Clientes"
+        ]
+      }
+    },
+    "/api/metrics/dashboard": {
+      "get": {
+        "operationId": "getDashboardMetrics",
+        "parameters": [
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "required": false,
+            "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "550e8400-e29b-41d4-a716-446655440000"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dados do dashboard recuperados com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado (Token JWT inválido ou ausente).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerErrorResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Obter indicadores gerais e clientes mais populares",
+        "tags": [
+          "Métricas & Dashboard"
+        ]
+      }
+    },
+    "/api/metrics/growth": {
+      "get": {
+        "operationId": "getGrowthMetrics",
+        "parameters": [
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "required": false,
+            "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "550e8400-e29b-41d4-a716-446655440000"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dados do dashboard recuperados com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MonthlyGrowthDto"
+                  }
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado (Token JWT inválido ou ausente).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerErrorResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Obter dados de crescimento mensal para gráficos",
+        "tags": [
+          "Métricas & Dashboard"
+        ]
+      }
+    },
+    "/api/health": {
+      "get": {
+        "operationId": "checkHealth",
+        "parameters": [
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "required": false,
+            "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "550e8400-e29b-41d4-a716-446655440000"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The Health Check is successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "info": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "error": {
+                      "type": "object",
+                      "example": {},
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "details": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The Health Check is not successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "info": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "error": {
+                      "type": "object",
+                      "example": {
+                        "redis": {
+                          "status": "down",
+                          "message": "Could not connect"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "details": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        },
+                        "redis": {
+                          "status": "down",
+                          "message": "Could not connect"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Verificar estado da aplicação (Liveness/Readiness)",
+        "tags": [
+          "Health & Monitoring"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Capital CRM API",
+    "description": "Documentação da API do Capital CRM Platform",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "E-mail do usuário",
+            "example": "admin@capital.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "Senha do usuário",
+            "example": "admin123",
+            "minLength": 6
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "AuthResponseDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "Token de acesso JWT (Bearer)",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          }
+        },
+        "required": [
+          "accessToken"
+        ]
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Novo nome do usuário",
+            "example": "Admin System Updated"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "ValidationErrorDetail": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "Nome do campo que falhou",
+            "example": "email"
+          },
+          "errors": {
+            "description": "Regras de validação que falharam",
+            "example": [
+              "O formato do e-mail é inválido."
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "field",
+          "errors"
+        ]
+      },
+      "BadRequestResponseDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "example": 400
+          },
+          "message": {
+            "type": "string",
+            "example": "Erro de validação nos dados enviados."
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationErrorDetail"
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "example": "2025-12-06T18:33:55.000Z"
+          },
+          "path": {
+            "type": "string",
+            "example": "/api/auth/login"
+          }
+        },
+        "required": [
+          "statusCode",
+          "message",
+          "errors",
+          "timestamp",
+          "path"
+        ]
+      },
+      "UnauthorizedResponseDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "example": 401
+          },
+          "message": {
+            "type": "string",
+            "example": "Credenciais inválidas ou token expirado."
+          },
+          "error": {
+            "type": "string",
+            "example": "Unauthorized"
+          }
+        },
+        "required": [
+          "statusCode",
+          "message",
+          "error"
+        ]
+      },
+      "InternalServerErrorResponseDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "example": 500
+          },
+          "message": {
+            "type": "string",
+            "example": "Internal Server Error"
+          }
+        },
+        "required": [
+          "statusCode",
+          "message"
+        ]
+      },
+      "CreateClientDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nome do cliente",
+            "example": "João da Silva"
+          },
+          "salary": {
+            "type": "number",
+            "description": "Salário do cliente",
+            "example": 5000
+          },
+          "companyValue": {
+            "type": "number",
+            "description": "Valor da empresa do cliente",
+            "example": 1000000.5
+          }
+        },
+        "required": [
+          "name",
+          "salary",
+          "companyValue"
+        ]
+      },
+      "Client": {
+        "type": "object",
+        "properties": {}
+      },
+      "PaginationMeta": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number",
+            "example": 100
+          },
+          "page": {
+            "type": "number",
+            "example": 1
+          },
+          "lastPage": {
+            "type": "number",
+            "example": 10
+          },
+          "limit": {
+            "type": "number",
+            "example": 10
+          }
+        },
+        "required": [
+          "total",
+          "page",
+          "lastPage",
+          "limit"
+        ]
+      },
+      "PaginatedClientsResultDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Client"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ]
+      },
+      "NotFoundResponseDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "example": 404
+          },
+          "message": {
+            "type": "string",
+            "example": "Recurso não encontrado."
+          },
+          "error": {
+            "type": "string",
+            "example": "Not Found"
+          }
+        },
+        "required": [
+          "statusCode",
+          "message",
+          "error"
+        ]
+      },
+      "UpdateClientDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nome do cliente",
+            "example": "João da Silva"
+          },
+          "salary": {
+            "type": "number",
+            "description": "Salário do cliente",
+            "example": 5000
+          },
+          "companyValue": {
+            "type": "number",
+            "description": "Valor da empresa do cliente",
+            "example": 1000000.5
+          }
+        }
+      },
+      "TopClientDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "b7783b32-7251-4202-a018-f3ea91b9a871"
+          },
+          "name": {
+            "type": "string",
+            "example": "João Silva"
+          },
+          "views": {
+            "type": "number",
+            "example": 150
+          },
+          "companyValue": {
+            "type": "number",
+            "example": 50000
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "views",
+          "companyValue",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "DashboardResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalClients": {
+            "type": "number",
+            "description": "Total de clientes ativos na base",
+            "example": 120
+          },
+          "totalCompanyValue": {
+            "type": "number",
+            "description": "Soma do valor de mercado das empresas",
+            "example": 1500000
+          },
+          "averageSalary": {
+            "type": "number",
+            "description": "Média salarial dos clientes",
+            "example": 5400.5
+          },
+          "topViewedClients": {
+            "description": "Top 5 clientes mais visualizados",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TopClientDto"
+            }
+          }
+        },
+        "required": [
+          "totalClients",
+          "totalCompanyValue",
+          "averageSalary",
+          "topViewedClients"
+        ]
+      },
+      "MonthlyGrowthDto": {
+        "type": "object",
+        "properties": {
+          "month": {
+            "type": "string",
+            "example": "2025-01"
+          },
+          "count": {
+            "type": "number",
+            "example": 15
+          },
+          "totalCompanyValue": {
+            "type": "number",
+            "example": 150000
+          }
+        },
+        "required": [
+          "month",
+          "count",
+          "totalCompanyValue"
+        ]
+      }
+    }
+  }
+}

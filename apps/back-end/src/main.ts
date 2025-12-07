@@ -1,36 +1,50 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { envs } from './config/envs';
-import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import {
+  BadRequestException,
+  ClassSerializerInterceptor,
+  ValidationError,
+  ValidationPipe,
+} from '@nestjs/common';
+import { MESSAGES_HELPER } from './common/constants/messages.helper';
+import { setupSwagger } from './config/swagger.config';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, { bufferLogs: true, cors: true });
 
   app.useLogger(app.get(Logger));
+
   app.useGlobalInterceptors(
     new LoggerErrorInterceptor(),
     new ClassSerializerInterceptor(app.get(Reflector)),
   );
-  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      stopAtFirstError: false,
+      exceptionFactory: (errors: ValidationError[]) => {
+        const formattedErrors = errors.map((error) => ({
+          field: error.property,
+          errors: Object.values(error.constraints || {}),
+        }));
+
+        return new BadRequestException({
+          statusCode: 400,
+          message: MESSAGES_HELPER.EXCEPTION.BAD_REQUEST,
+          errors: formattedErrors,
+          timestamp: new Date().toISOString(),
+        });
+      },
+    }),
+  );
 
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
 
-  const config = new DocumentBuilder()
-    .setTitle('Capital CRM API')
-    .setDescription('Documentação da API do Capital CRM Platform')
-    .setVersion('1.0')
-    .addBearerAuth()
-    .build();
-
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, document, {
-    swaggerOptions: {
-      persistAuthorization: true,
-    },
-  });
+  setupSwagger(app);
 
   await app.listen(envs.PORT);
 

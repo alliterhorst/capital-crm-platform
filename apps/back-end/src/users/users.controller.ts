@@ -16,8 +16,11 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Patch('profile')
-  @ApiOperation({ summary: MESSAGES_HELPER.SWAGGER.USER_UPDATE_SUMMARY })
-  @ApiBaseAuthResponses()
+  @ApiOperation({
+    summary: MESSAGES_HELPER.SWAGGER.USER_UPDATE_SUMMARY,
+    operationId: 'updateUserProfile',
+  })
+  @ApiBaseAuthResponses({ notFound: false })
   @ApiResponse({
     status: HttpStatus.OK,
     description: MESSAGES_HELPER.USERS.UPDATE_SUCCESS,

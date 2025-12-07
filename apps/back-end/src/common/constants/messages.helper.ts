@@ -38,6 +38,11 @@ export const MESSAGES_HELPER = {
     DASHBOARD_SUCCESS: 'Dados do dashboard recuperados com sucesso.',
   },
   SWAGGER: {
+    TITLE: 'Capital CRM API',
+    DESCRIPTION: 'Documentação da API do Capital CRM Platform',
+    VERSION: '1.0',
+    X_REQUEST_ID: 'x-request-id',
+    X_REQUEST_ID_DESC: 'ID único da requisição (UUID v4). Útil para rastreamento de logs.',
     AUTH_TAG: 'Autenticação',
     CLIENTS_TAG: 'Clientes',
     USERS_TAG: 'Usuários',
@@ -68,5 +73,10 @@ export const MESSAGES_HELPER = {
     SEED_ADMIN_START: 'Iniciando execução das Seeds...',
     SEED_SUCCESS: 'Execução das Seeds concluída com sucesso.',
     SEED_FAIL: 'Falha na execução das Seeds.',
+  },
+  EXCEPTION: {
+    BAD_REQUEST: 'Erro de validação nos dados enviados.',
+    UNAUTHORIZED: 'Credenciais ou token inválidos.',
+    INTERNAL_ERROR: 'Ocorreu um erro interno ao processar a requisição.',
   },
 } as const;

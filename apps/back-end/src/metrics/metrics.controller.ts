@@ -15,8 +15,11 @@ export class MetricsController {
   constructor(private readonly metricsService: MetricsService) {}
 
   @Get('dashboard')
-  @ApiOperation({ summary: MESSAGES_HELPER.SWAGGER.METRICS_DASHBOARD_SUMMARY })
-  @ApiBaseAuthResponses()
+  @ApiOperation({
+    summary: MESSAGES_HELPER.SWAGGER.METRICS_DASHBOARD_SUMMARY,
+    operationId: 'getDashboardMetrics',
+  })
+  @ApiBaseAuthResponses({ badRequest: false, notFound: false })
   @ApiResponse({
     status: HttpStatus.OK,
     description: MESSAGES_HELPER.METRICS.DASHBOARD_SUCCESS,
@@ -27,8 +30,11 @@ export class MetricsController {
   }
 
   @Get('growth')
-  @ApiOperation({ summary: MESSAGES_HELPER.SWAGGER.METRICS_GROWTH_SUMMARY })
-  @ApiBaseAuthResponses()
+  @ApiOperation({
+    summary: MESSAGES_HELPER.SWAGGER.METRICS_GROWTH_SUMMARY,
+    operationId: 'getGrowthMetrics',
+  })
+  @ApiBaseAuthResponses({ badRequest: false, notFound: false })
   @ApiResponse({
     status: HttpStatus.OK,
     description: MESSAGES_HELPER.METRICS.DASHBOARD_SUCCESS,
