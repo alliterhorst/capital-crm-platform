@@ -197,3 +197,157 @@ To customize the theme:
   - Live under `features/<feature-name>` with their own hooks, types, and components.
   - Use API clients from `shared/api` instead of calling Axios directly.
   - Prefer `shared/ui` primitives for visual consistency.
+
+## 🧪 Local API Mocking (MSW)
+
+The frontend now supports **mocking all backend API requests** using
+[**Mock Service Worker (MSW)**](https://mswjs.io/).
+
+This allows full development of pages, features and flows **without running the backend**, while still preserving API contracts, types, and pagination behavior.
+
+---
+
+### ⭐ What is mocked?
+
+- Clients (CRUD + pagination + selection)
+- Authentication (login + profile)
+- Dashboard metrics
+- Bulk update operations
+- Detail view with metrics (`ClientDetailDto`)
+
+Mocks are fully typed using the Orval-generated DTOs under:
+
+```
+apps/front-end/src/shared/api/generated/model/
+```
+
+All handlers live in:
+
+```
+apps/front-end/src/mocks/handlers.ts
+```
+
+The MSW worker entry point is:
+
+```
+apps/front-end/src/mocks/browser.ts
+```
+
+---
+
+### 🚦 Enabling / disabling mocking
+
+Mocking is controlled via an environment variable:
+
+```
+VITE_API_MOCKING=true
+```
+
+When this flag is **true**, MSW starts before React renders:
+
+- `main.tsx` dynamically imports and boots the worker
+- Any request to `*/api/...` is intercepted and served from the handlers
+
+When disabled (`VITE_API_MOCKING=false`), all API calls go directly to the actual backend.
+
+---
+
+### 🧑‍💻 Running the frontend with mocks enabled
+
+```
+VITE_API_MOCKING=true npx nx serve front-end --force
+```
+
+Then open:
+
+```
+http://localhost:5173
+```
+
+You should see in the browser devtools console:
+
+```
+[MSW] Mocking enabled.
+API Mocking: true
+```
+
+And API requests in the **Network tab** show as:
+
+- “from ServiceWorker”
+- Or include MSW-specific debug logs
+
+---
+
+### 🧱 Architecture notes (mocking)
+
+- **No code changes are required** to switch between real and mocked backend.
+- MSW intercepts at the browser level, not via Axios interceptors.
+- Wildcard patterns (`*/api/...`) ensure matches regardless of origin or port.
+- All mock handlers return the **same shapes** as the backend OpenAPI contract.
+- Pagination, filtering, DTO transforms and metric aggregation are simulated.
+
+> This maintains the same developer experience as calling the real API.
+
+---
+
+### 🛠 Editing / adding new mock handlers
+
+If you add a new backend endpoint through Orval, do the following:
+
+1. Create a corresponding handler in
+   `apps/front-end/src/mocks/handlers.ts`
+2. Use the existing DTO types (import from `shared/api/generated/model`)
+3. Prefer structured mocking (pagination, meta, timestamps, UUIDs)
+
+Example import:
+
+```ts
+import type { ClientDetailDto, PaginatedClientsResultDto } from '@/shared/api/generated/model';
+```
+
+---
+
+### 🪵 Debugging
+
+Useful console logs to verify MSW presence:
+
+```ts
+console.log('API Mocking:', import.meta.env.VITE_API_MOCKING);
+console.log('[MSW] worker loaded');
+```
+
+Common issues:
+
+- Console shows `[MSW] ...` **but requests still hit real backend** →
+  Ensure handlers use `'*/api/...` syntax.
+- `CORS` errors while mocking → MSW bypasses them, not a real issue.
+- LocalStorage seeds reset → clear browser Application tab.
+
+---
+
+### 📦 Production build with mocks
+
+Mocking is **development-only**.
+The worker will NOT be included in production builds if disabled via environment flag.
+
+Build normally:
+
+```bash
+npx nx build front-end
+```
+
+Or explicitly disabling mocks:
+
+```bash
+VITE_API_MOCKING=false npx nx build front-end
+```
+
+---
+
+## 🔒 Checklist before merging
+
+- [ ] Wildcard URL patterns verified (`*/api/...`)
+- [ ] `main.tsx` boots worker **before** `createRoot()`
+- [ ] README updated with environment usage
+- [ ] Commit includes `mocks/**` tree
+- [ ] No real backend traffic when mocking enabled

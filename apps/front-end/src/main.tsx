@@ -1,13 +1,26 @@
-import React, { StrictMode } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import React from 'react';
 import * as ReactDOM from 'react-dom/client';
-import App from './app/app';
 import { AppProvider } from './app/provider';
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+async function enableMocking(): Promise<void> {
+  if (import.meta.env.VITE_API_MOCKING === 'true') {
+    const { worker } = await import('./mocks/browser');
+    await worker.start({
+      onUnhandledRequest: 'bypass',
+    });
+  }
+}
 
-root.render(
-  <React.StrictMode>
-    <AppProvider />
-  </React.StrictMode>,
-);
+async function bootstrap(): Promise<void> {
+  await enableMocking();
+
+  const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+
+  root.render(
+    <React.StrictMode>
+      <AppProvider />
+    </React.StrictMode>,
+  );
+}
+
+bootstrap();
