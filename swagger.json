@@ -1,42 +1,6 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/api": {
-      "get": {
-        "operationId": "AppController_getData",
-        "parameters": [
-          {
-            "name": "x-request-id",
-            "in": "header",
-            "required": false,
-            "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "example": "550e8400-e29b-41d4-a716-446655440000"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "headers": {
-              "x-request-id": {
-                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
-                "schema": {
-                  "type": "string",
-                  "format": "uuid",
-                  "example": "550e8400-e29b-41d4-a716-446655440000"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "App"
-        ]
-      }
-    },
     "/api/metrics": {
       "get": {
         "operationId": "PrometheusController_index",

@@ -41,7 +41,7 @@ export function AppLayout(): JSX.Element {
       >
         <Header toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
 
-        <main className="flex-1 overflow-auto bg-secondary/30 p-6 px-16">
+        <main className="flex-1 overflow-auto bg-secondary/30 p-6 px-1 lg:px-16">
           <Outlet />
         </main>
       </div>

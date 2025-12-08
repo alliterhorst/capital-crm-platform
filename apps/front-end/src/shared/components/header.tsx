@@ -26,7 +26,7 @@ export function Header({ toggleSidebar, isSidebarOpen }: HeaderProps): JSX.Eleme
   }
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center border-b bg-background px-16 shadow-sm">
+    <header className="sticky top-0 z-30 flex h-16 items-center border-b bg-background px-2 lg:px-16 shadow-sm">
       <div className="flex w-1/4 items-center gap-4">
         <div className={cn('flex items-center gap-4', isSidebarOpen ? 'lg:hidden' : 'flex')}>
           <button
@@ -38,7 +38,7 @@ export function Header({ toggleSidebar, isSidebarOpen }: HeaderProps): JSX.Eleme
           </button>
 
           <Link to="/" className="flex items-center">
-            <img src="/logo.svg" alt="Logo" className="h-20 w-auto" />
+            <img src="/logo.svg" alt="Logo" className="h-19  pt-1 w-30 object-contain shrink-0" />
           </Link>
         </div>
       </div>

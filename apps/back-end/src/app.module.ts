@@ -8,8 +8,6 @@ import { IncomingMessage } from 'http';
 import { validate } from './config/env.validation';
 import { loggerConfig } from './config/logger.config';
 import { UsersModule } from './users/users.module';
-import { AppController } from './app/app.controller';
-import { AppService } from './app/app.service';
 import { TraceIdInterceptor } from './common/interceptors/trace-id.interceptor';
 import AppDataSource from './config/typeorm.config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
@@ -53,9 +51,8 @@ import { PrometheusController, PrometheusModule } from '@willsoto/nestjs-prometh
     MetricsModule,
     HealthModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [
-    AppService,
     {
       provide: APP_INTERCEPTOR,
       useClass: TraceIdInterceptor,

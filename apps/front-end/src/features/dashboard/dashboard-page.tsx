@@ -40,6 +40,8 @@ export function DashboardPage(): JSX.Element {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL',
+      notation: 'compact',
+      maximumFractionDigits: 1,
     }).format(value);
   }
 
@@ -88,11 +90,11 @@ export function DashboardPage(): JSX.Element {
       </div>
 
       <div className="grid gap-4 md:grid-cols-1">
-        <Card className="col-span-7 lg:col-span-4 p-8">
+        <Card className="col-span-7 lg:col-span-4 p-2 lg:p-8">
           <CardHeader>
             <CardTitle>{MESSAGES_HELPER.DASHBOARD.METRICS.GROWTH_AND_VALUATION}</CardTitle>
           </CardHeader>
-          <CardContent className="pl-0">
+          <CardContent className="p-0">
             {isLoadingGrowth ? (
               <div className="flex h-[350px] items-center justify-center">
                 <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
@@ -160,41 +162,43 @@ export function DashboardPage(): JSX.Element {
 
       <Card>
         <CardHeader>
-          <CardTitle className="p-6">{MESSAGES_HELPER.DASHBOARD.RECENT_CLIENTS}</CardTitle>
+          <CardTitle className="p-6 pb-0">{MESSAGES_HELPER.DASHBOARD.RECENT_CLIENTS}</CardTitle>
         </CardHeader>
-        <CardContent className="p-6">
-          {isLoadingDashboard ? (
-            <div className="p-4 text-sm text-muted-foreground">
-              {MESSAGES_HELPER.DASHBOARD.RECENT_CLIENTS_LOADING}
-            </div>
-          ) : (
-            <div className="space-y-1">
-              <div className="grid grid-cols-4 border-b px-4 py-2 text-xs font-medium text-muted-foreground">
-                <div className="col-span-2">{MESSAGES_HELPER.DASHBOARD.NAME}</div>
-                <div> {MESSAGES_HELPER.DASHBOARD.VIEWS}</div>
-                <div className="text-right"> {MESSAGES_HELPER.DASHBOARD.COMPANY_VALUE}</div>
+        <CardContent className="p-6 pt-0">
+          <div className="overflow-x-auto">
+            {isLoadingDashboard ? (
+              <div className="p-4 text-sm text-muted-foreground">
+                {MESSAGES_HELPER.DASHBOARD.RECENT_CLIENTS_LOADING}
               </div>
+            ) : (
+              <div className="space-y-1">
+                <div className="grid grid-cols-4 border-b px-4 py-2 text-xs font-medium text-muted-foreground">
+                  <div className="col-span-2">{MESSAGES_HELPER.DASHBOARD.NAME}</div>
+                  <div> {MESSAGES_HELPER.DASHBOARD.VIEWS}</div>
+                  <div className="text-right"> {MESSAGES_HELPER.DASHBOARD.COMPANY_VALUE}</div>
+                </div>
 
-              {recentClients.map((client) => (
-                <div
-                  key={client.id}
-                  className="grid grid-cols-4 px-4 py-3 text-sm transition-colors hover:bg-muted/50"
-                >
-                  <div className="col-span-2 font-medium">{client.name}</div>
-                  <div className="text-muted-foreground">{client.views}</div>
-                  <div className="text-right font-medium">
-                    {formatCurrency(client.companyValue)}
+                {recentClients.map((client) => (
+                  <div
+                    key={client.id}
+                    className="grid grid-cols-4 px-4 py-3 text-sm transition-colors hover:bg-muted/50"
+                  >
+                    <div className="col-span-2 font-medium">{client.name}</div>
+                    <div className="text-muted-foreground">{client.views}</div>
+                    <div className="text-right font-medium">
+                      {formatCurrency(client.companyValue)}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
 
-              {recentClients.length === 0 && (
-                <div className="p-4 text-sm text-muted-foreground">
-                  {MESSAGES_HELPER.DASHBOARD.NO_RECENT_CLIENTS}
-                </div>
-              )}
-            </div>
-          )}
+                {recentClients.length === 0 && (
+                  <div className="p-4 text-sm text-muted-foreground">
+                    {MESSAGES_HELPER.DASHBOARD.NO_RECENT_CLIENTS}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </CardContent>
       </Card>
     </div>

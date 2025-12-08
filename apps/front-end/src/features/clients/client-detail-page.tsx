@@ -82,7 +82,7 @@ export function ClientDetailPage(): JSX.Element {
   }
 
   return (
-    <div className="space-y-6 p-6 pt-0">
+    <div className="space-y-6 p-2 lg:p-6 pt-0">
       <Card>
         <CardHeader>
           <CardTitle className="text-xl font-bold">

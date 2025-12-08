@@ -239,7 +239,7 @@ export function ClientsPage({ currentPath }: ClientsPageProps): JSX.Element {
   }, [isSelectedMode, hasSelectedClients, isBulkUpdating]);
 
   return (
-    <div className="space-y-6 p-6 pt-0">
+    <div className="space-y-6 p-2 lg:p-6 pt-0">
       <HeaderBar
         totalClients={totalClients}
         rowsPerPage={rowsPerPage}
