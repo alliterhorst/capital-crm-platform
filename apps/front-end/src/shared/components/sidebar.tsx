@@ -76,7 +76,7 @@ export function Sidebar({ isOpen, toggleSidebar, isMobile }: SidebarProps): JSX.
       </div>
 
       <nav className="flex-1 space-y-2 overflow-y-auto overflow-x-hidden px-4 py-4">
-        {NAVIGATION_ITEMS.map((item) => (
+        {NAVIGATION_ITEMS.filter((item) => item.sideMenuVisible).map((item) => (
           <NavItem
             key={item.path}
             to={item.path}

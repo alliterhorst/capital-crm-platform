@@ -10,6 +10,8 @@ import { MESSAGES_HELPER } from '@/shared/lib/messages-helper';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card';
+import { useAuthStore } from '@/features/auth/stores/auth.store';
+import { NAVIGATION_MAP } from '@/shared/config/navigation';
 
 const loginSchema = z.object({
   email: z.string().email(MESSAGES_HELPER.VALIDATION.INVALID_EMAIL),
@@ -30,6 +32,7 @@ interface BackendErrorResponse {
 export function LoginPage(): JSX.Element {
   const navigate = useNavigate();
   const { mutateAsync: loginUser } = useLogin();
+  const { setToken, setUser } = useAuthStore();
 
   const {
     register,
@@ -50,8 +53,14 @@ export function LoginPage(): JSX.Element {
       const result = await loginUser({ data: payload });
 
       if (result.accessToken) {
-        localStorage.setItem('access_token', result.accessToken);
-        navigate('/');
+        setToken(result.accessToken);
+
+        setUser({
+          email: formData.email,
+          name: '',
+        });
+
+        navigate(NAVIGATION_MAP.WELCOME.path);
       }
     } catch (error) {
       const axiosError = error as AxiosError<BackendErrorResponse>;
@@ -88,7 +97,9 @@ export function LoginPage(): JSX.Element {
               placeholder={MESSAGES_HELPER.AUTH.EMAIL_PLACEHOLDER}
               {...register('email')}
             />
-            {errors.email && <span className="text-sm text-red-500">{errors.email.message}</span>}
+            {errors.email && (
+              <span className="text-sm text-destructive">{errors.email.message}</span>
+            )}
           </div>
           <div className="space-y-2">
             <Input
@@ -98,7 +109,7 @@ export function LoginPage(): JSX.Element {
               {...register('password')}
             />
             {errors.password && (
-              <span className="text-sm text-red-500">{errors.password.message}</span>
+              <span className="text-sm text-destructive">{errors.password.message}</span>
             )}
           </div>
           <Button type="submit" className="w-full" disabled={isSubmitting}>

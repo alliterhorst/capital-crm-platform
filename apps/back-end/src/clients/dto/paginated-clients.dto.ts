@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Client } from '../entities/client.entity';
+import { ClientResponseDto } from './client-response.dto';
 
 class PaginationMeta {
   @ApiProperty({ example: 100 })
@@ -16,8 +16,8 @@ class PaginationMeta {
 }
 
 export class PaginatedClientsResultDto {
-  @ApiProperty({ type: [Client] })
-  data!: Client[];
+  @ApiProperty({ type: [ClientResponseDto] })
+  data!: ClientResponseDto[];
 
   @ApiProperty({ type: PaginationMeta })
   meta!: PaginationMeta;

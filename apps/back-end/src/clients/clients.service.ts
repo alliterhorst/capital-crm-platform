@@ -8,6 +8,10 @@ import { MESSAGES_HELPER } from '../common/constants/messages.helper';
 import { MetricsService } from '../metrics/metrics.service';
 import { PaginationDto } from '../common/dto/pagination.dto';
 import { PaginatedClientsResultDto } from './dto/paginated-clients.dto';
+import { ClientDetailDto } from './dto/client-detail.dto';
+import { ClientResponseDto } from './dto/client-response.dto';
+import { UpdateSelectionDto } from './dto/update-selection.dto';
+import { UpdateResultDto } from './dto/update-result.dto';
 
 @Injectable()
 export class ClientsService {
@@ -19,7 +23,7 @@ export class ClientsService {
     private readonly metricsService: MetricsService,
   ) {}
 
-  async create(createClientDto: CreateClientDto): Promise<Client> {
+  async create(createClientDto: CreateClientDto): Promise<ClientResponseDto> {
     this.logger.log(`Creating new client: ${createClientDto.name}`);
 
     const client = this.clientRepository.create(createClientDto);
@@ -63,11 +67,7 @@ export class ClientsService {
     };
   }
 
-  async findOne(id: string): Promise<Client> {
-    this.logger.debug(`Fetching client details: ${id}`);
-
-    await this.metricsService.incrementViews(id);
-
+  private async _findOneEntity(id: string): Promise<Client> {
     const client = await this.clientRepository.findOne({
       where: { id },
       relations: ['metric'],
@@ -81,13 +81,29 @@ export class ClientsService {
     return client;
   }
 
-  async update(id: string, updateClientDto: UpdateClientDto): Promise<Client> {
+  async findOne(id: string): Promise<ClientDetailDto> {
+    this.logger.debug(`Fetching client details: ${id}`);
+
+    await this.metricsService.incrementViews(id);
+
+    const client = await this._findOneEntity(id);
+
+    return client;
+  }
+
+  async update(id: string, updateClientDto: UpdateClientDto): Promise<ClientDetailDto> {
     this.logger.log(`Updating client: ${id}`);
 
-    const client = await this.findOne(id);
+    const client = await this._findOneEntity(id);
     this.clientRepository.merge(client, updateClientDto);
 
-    return this.clientRepository.save(client);
+    return await this.clientRepository.save(client);
+  }
+
+  async updateAllSelections({ isSelected }: UpdateSelectionDto): Promise<UpdateResultDto> {
+    this.logger.log(`Updating selection for all clients to: ${isSelected}`);
+
+    return await this.clientRepository.update({ isSelected: !isSelected }, { isSelected });
   }
 
   async remove(id: string): Promise<void> {

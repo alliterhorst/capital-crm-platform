@@ -8,12 +8,12 @@
 
   <text
     x="50%"
-    y="45"
+    y="50"
     text-anchor="middle"
     font-family="Arial, Helvetica, sans-serif"
     font-size="26"
     font-weight="bold">
-      <tspan fill="#003366">CAPITAL</tspan>
+      <tspan fill="#045fbbff">CAPITAL</tspan>
       <tspan fill="#00AADD" font-weight="normal"> CRM</tspan>
   </text>
 
@@ -22,7 +22,7 @@
     y="65"
     text-anchor="middle"
     font-family="Arial, Helvetica, sans-serif"
-    font-size="9"
+    font-size="12"
     fill="#666666">
     Intelligence &amp; Valuation Platform
   </text>

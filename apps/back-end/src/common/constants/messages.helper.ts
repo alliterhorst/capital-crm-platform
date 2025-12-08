@@ -31,6 +31,7 @@ export const MESSAGES_HELPER = {
     SEED_COMPLETE: 'Seed de clientes finalizada.',
     SEED_SKIPPED: 'Seed de clientes mock pulada (variável de ambiente desativada).',
     SEED_ALREADY_EXISTS: 'Massa de dados já existente. Pulando geração de novos clientes.',
+    BULK_UPDATED: 'Clientes atualizados com sucesso.',
   },
   METRICS: {
     INCREMENT_ERROR: 'Falha ao incrementar visualizações do cliente.',
@@ -40,6 +41,7 @@ export const MESSAGES_HELPER = {
   SWAGGER: {
     TITLE: 'Capital CRM API',
     DESCRIPTION: 'Documentação da API do Capital CRM Platform',
+    CLIENT_BULK_UPDATE_SUMMARY: 'Atualiza o estado de seleção de múltiplos clientes.',
     VERSION: '1.0',
     X_REQUEST_ID: 'x-request-id',
     X_REQUEST_ID_DESC: 'ID único da requisição (UUID v4). Útil para rastreamento de logs.',

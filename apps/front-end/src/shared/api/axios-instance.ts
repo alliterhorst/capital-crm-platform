@@ -19,8 +19,15 @@ export const AXIOS_INSTANCE = axios.create({
 
 AXIOS_INSTANCE.interceptors.request.use(
   (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-    const token = localStorage.getItem('capital-crm-token');
-
+    const authStructure = localStorage.getItem('capital-crm-auth');
+    let token: string | null = null;
+    if (authStructure) {
+      try {
+        token = JSON.parse(authStructure)?.state?.token;
+        // eslint-disable-next-line no-empty
+      } catch {}
+    }
+    console.log('Token in request interceptor:', token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

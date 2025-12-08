@@ -1,31 +1,16 @@
-import { createBrowserRouter } from 'react-router-dom';
-import { AppLayout } from './layouts/app-layout';
-import { AuthLayout } from './layouts/auth-layout';
+import { JSX } from 'react';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { AuthGuard } from '@/shared/components/auth-guard';
+import { AppLayout } from '@/app/layouts/app-layout';
+import { AuthLayout } from '@/app/layouts/auth-layout';
 import { LoginPage } from '@/features/auth/login-page';
 import { DashboardPage } from '@/features/dashboard/dashboard-page';
 import { NAVIGATION_MAP } from '@/shared/config/navigation';
-
-const { DASHBOARD, CLIENTS, SELECTED_CLIENTS } = NAVIGATION_MAP;
+import { WelcomePage } from '@/features/auth/welcome-page';
+import { ClientsPage } from '@/features/clients/clients-page';
+import { ClientDetailPage } from '@/features/clients/client-detail-page';
 
 export const router = createBrowserRouter([
-  {
-    path: DASHBOARD.path,
-    element: <AppLayout />,
-    children: [
-      {
-        path: DASHBOARD.path,
-        element: <DashboardPage />,
-      },
-      {
-        path: CLIENTS.path,
-        element: <div className="p-4">Módulo de Clientes (Em breve)</div>,
-      },
-      {
-        path: SELECTED_CLIENTS.path,
-        element: <div className="p-4">Módulo de Clientes Selecionados (Em breve)</div>,
-      },
-    ],
-  },
   {
     path: '/auth',
     element: <AuthLayout />,
@@ -35,5 +20,44 @@ export const router = createBrowserRouter([
         element: <LoginPage />,
       },
     ],
+  },
+  {
+    path: '/',
+    element: <AuthGuard />,
+    children: [
+      {
+        path: 'welcome',
+        element: <WelcomePage />,
+      },
+      {
+        element: <AppLayout />,
+        children: [
+          {
+            index: true,
+            element: <DashboardPage />,
+          },
+          {
+            path: NAVIGATION_MAP.DASHBOARD.path,
+            element: <DashboardPage />,
+          },
+          {
+            path: NAVIGATION_MAP.CLIENTS.path,
+            element: <ClientsPage currentPath={NAVIGATION_MAP.CLIENTS.path} />,
+          },
+          {
+            path: `${NAVIGATION_MAP.CLIENTS.path}/:id`,
+            element: <ClientDetailPage />,
+          },
+          {
+            path: NAVIGATION_MAP.SELECTED_CLIENTS.path,
+            element: <ClientsPage currentPath={NAVIGATION_MAP.SELECTED_CLIENTS.path} />,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: '*',
+    element: <Navigate to="/" replace />,
   },
 ]);

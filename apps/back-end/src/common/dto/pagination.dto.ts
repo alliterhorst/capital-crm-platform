@@ -23,8 +23,6 @@ export class PaginationDto {
 
   @ApiPropertyOptional({
     description: 'Filtrar apenas clientes selecionados',
-    example: false,
-    default: false,
   })
   @IsOptional()
   @Transform(({ value }) => value === 'true' || value === true)

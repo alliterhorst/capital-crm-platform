@@ -5,10 +5,10 @@
  * Documentação da API do Capital CRM Platform
  * OpenAPI spec version: 1.0
  */
-import type { Client } from './client';
+import type { ClientResponseDto } from './clientResponseDto';
 import type { PaginationMeta } from './paginationMeta';
 
 export interface PaginatedClientsResultDto {
-  data: Client[];
+  data: ClientResponseDto[];
   meta: PaginationMeta;
 }

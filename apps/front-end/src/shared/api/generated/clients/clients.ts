@@ -18,6 +18,8 @@ import type {
 
 import type {
   BadRequestResponseDto,
+  ClientDetailDto,
+  ClientResponseDto,
   CreateClientDto,
   InternalServerErrorResponseDto,
   ListClientsParams,
@@ -25,6 +27,8 @@ import type {
   PaginatedClientsResultDto,
   UnauthorizedResponseDto,
   UpdateClientDto,
+  UpdateResultDto,
+  UpdateSelectionDto,
 } from '.././model';
 
 import { customInstance } from '../../axios-instance';
@@ -43,7 +47,7 @@ export const createClient = (
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
-  return customInstance<void>(
+  return customInstance<ClientResponseDto>(
     {
       url: `/api/clients`,
       method: 'POST',
@@ -194,6 +198,93 @@ export function useListClients<
 }
 
 /**
+ * @summary Atualiza o estado de seleção de múltiplos clientes.
+ */
+export const updateAllSelections = (
+  updateSelectionDto: UpdateSelectionDto,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<UpdateResultDto>(
+    {
+      url: `/api/clients`,
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      data: updateSelectionDto,
+    },
+    options,
+  );
+};
+
+export const getUpdateAllSelectionsMutationOptions = <
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | InternalServerErrorResponseDto,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateAllSelections>>,
+    TError,
+    { data: UpdateSelectionDto },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateAllSelections>>,
+  TError,
+  { data: UpdateSelectionDto },
+  TContext
+> => {
+  const mutationKey = ['updateAllSelections'];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateAllSelections>>,
+    { data: UpdateSelectionDto }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return updateAllSelections(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UpdateAllSelectionsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateAllSelections>>
+>;
+export type UpdateAllSelectionsMutationBody = UpdateSelectionDto;
+export type UpdateAllSelectionsMutationError =
+  | BadRequestResponseDto
+  | UnauthorizedResponseDto
+  | InternalServerErrorResponseDto;
+
+/**
+ * @summary Atualiza o estado de seleção de múltiplos clientes.
+ */
+export const useUpdateAllSelections = <
+  TError = BadRequestResponseDto | UnauthorizedResponseDto | InternalServerErrorResponseDto,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateAllSelections>>,
+    TError,
+    { data: UpdateSelectionDto },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof updateAllSelections>>,
+  TError,
+  { data: UpdateSelectionDto },
+  TContext
+> => {
+  const mutationOptions = getUpdateAllSelectionsMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+/**
  * @summary Buscar detalhes de um cliente por ID
  */
 export const getClientById = (
@@ -201,7 +292,10 @@ export const getClientById = (
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
-  return customInstance<void>({ url: `/api/clients/${id}`, method: 'GET', signal }, options);
+  return customInstance<ClientDetailDto>(
+    { url: `/api/clients/${id}`, method: 'GET', signal },
+    options,
+  );
 };
 
 export const getGetClientByIdQueryKey = (id?: string) => {
@@ -278,7 +372,7 @@ export const updateClient = (
   updateClientDto: UpdateClientDto,
   options?: SecondParameter<typeof customInstance>,
 ) => {
-  return customInstance<void>(
+  return customInstance<ClientDetailDto>(
     {
       url: `/api/clients/${id}`,
       method: 'PATCH',

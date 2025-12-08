@@ -349,6 +349,13 @@
         "responses": {
           "201": {
             "description": "Cliente cadastrado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientResponseDto"
+                }
+              }
+            },
             "headers": {
               "x-request-id": {
                 "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
@@ -460,8 +467,6 @@
             "in": "query",
             "description": "Filtrar apenas clientes selecionados",
             "schema": {
-              "default": false,
-              "example": false,
               "type": "boolean"
             }
           },
@@ -568,6 +573,123 @@
         "tags": [
           "clients"
         ]
+      },
+      "patch": {
+        "operationId": "updateAllSelections",
+        "parameters": [
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "required": false,
+            "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "550e8400-e29b-41d4-a716-446655440000"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSelectionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Clientes atualizados com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateResultDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição inválida (Erro de validação de dados).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado (Token JWT inválido ou ausente).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerErrorResponseDto"
+                }
+              }
+            },
+            "headers": {
+              "x-request-id": {
+                "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Atualiza o estado de seleção de múltiplos clientes.",
+        "tags": [
+          "clients"
+        ]
       }
     },
     "/api/clients/{id}": {
@@ -597,6 +719,13 @@
         "responses": {
           "200": {
             "description": "Dados do cliente recuperados com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientDetailDto"
+                }
+              }
+            },
             "headers": {
               "x-request-id": {
                 "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
@@ -735,6 +864,13 @@
         "responses": {
           "200": {
             "description": "Dados do cliente atualizados com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientDetailDto"
+                }
+              }
+            },
             "headers": {
               "x-request-id": {
                 "description": "ID único da requisição (UUID v4). Útil para rastreamento de logs.",
@@ -1540,9 +1676,56 @@
           "companyValue"
         ]
       },
-      "Client": {
+      "ClientResponseDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID do cliente",
+            "example": "79ee2373-5d5d-4de7-9c48-e73bbd259fa1"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome do cliente",
+            "example": "João da Silva"
+          },
+          "salary": {
+            "type": "number",
+            "description": "Salário do cliente",
+            "example": 5000
+          },
+          "companyValue": {
+            "type": "number",
+            "description": "Valor da empresa do cliente",
+            "example": 500123.59
+          },
+          "isSelected": {
+            "type": "boolean",
+            "description": "Define se o cliente está selecionado",
+            "example": false,
+            "default": false
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Data de criação do cliente",
+            "example": "2023-10-01T12:34:56Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Data de atualização do cliente",
+            "example": "2023-10-02T12:34:56Z"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "salary",
+          "companyValue",
+          "createdAt",
+          "updatedAt"
+        ]
       },
       "PaginationMeta": {
         "type": "object",
@@ -1577,7 +1760,7 @@
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Client"
+              "$ref": "#/components/schemas/ClientResponseDto"
             }
           },
           "meta": {
@@ -1587,6 +1770,87 @@
         "required": [
           "data",
           "meta"
+        ]
+      },
+      "ClientMetricDto": {
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "string",
+            "description": "ID do cliente associado à métrica",
+            "example": "79ee2373-5d5d-4de7-9c48-e73bbd259fa1"
+          },
+          "views": {
+            "type": "number",
+            "description": "Número de visualizações do cliente",
+            "example": 193
+          },
+          "lastViewedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Data da última visualização do cliente",
+            "example": "2025-12-08T14:59:12.636Z"
+          }
+        },
+        "required": [
+          "clientId",
+          "views",
+          "lastViewedAt"
+        ]
+      },
+      "ClientDetailDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID do cliente",
+            "example": "79ee2373-5d5d-4de7-9c48-e73bbd259fa1"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome do cliente",
+            "example": "João da Silva"
+          },
+          "salary": {
+            "type": "number",
+            "description": "Salário do cliente",
+            "example": 5000
+          },
+          "companyValue": {
+            "type": "number",
+            "description": "Valor da empresa do cliente",
+            "example": 500123.59
+          },
+          "isSelected": {
+            "type": "boolean",
+            "description": "Define se o cliente está selecionado",
+            "example": false,
+            "default": false
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Data de criação do cliente",
+            "example": "2023-10-01T12:34:56Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Data de atualização do cliente",
+            "example": "2023-10-02T12:34:56Z"
+          },
+          "metric": {
+            "$ref": "#/components/schemas/ClientMetricDto"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "salary",
+          "companyValue",
+          "createdAt",
+          "updatedAt",
+          "metric"
         ]
       },
       "NotFoundResponseDto": {
@@ -1636,6 +1900,46 @@
             "default": false
           }
         }
+      },
+      "UpdateSelectionDto": {
+        "type": "object",
+        "properties": {
+          "isSelected": {
+            "type": "boolean",
+            "description": "Define o estado de seleção (true para selecionar todos, false para remover seleção de todos)",
+            "example": false
+          }
+        },
+        "required": [
+          "isSelected"
+        ]
+      },
+      "UpdateResultDto": {
+        "type": "object",
+        "properties": {
+          "raw": {
+            "type": "object",
+            "description": "Resultado SQL bruto retornado pela consulta executada. O formato depende do driver do banco de dados.",
+            "example": {}
+          },
+          "affected": {
+            "type": "number",
+            "description": "Número de linhas/documentos afetados pela operação de atualização. Pode ser undefined em alguns drivers.",
+            "example": 42
+          },
+          "generatedMaps": {
+            "description": "Valores gerados pelo banco de dados (ex: chaves primárias ou timestamps) para as entidades atualizadas. Estrutura em formato de entidade.",
+            "example": [],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "raw",
+          "generatedMaps"
+        ]
       },
       "TopClientDto": {
         "type": "object",
