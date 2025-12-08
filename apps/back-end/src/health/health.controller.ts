@@ -10,7 +10,7 @@ import {
 import { MESSAGES_HELPER } from '../common/constants/messages.helper';
 
 @ApiTags(MESSAGES_HELPER.SWAGGER.HEALTH_TAG)
-@Controller('health')
+@Controller('healthz')
 export class HealthController {
   constructor(
     private readonly health: HealthCheckService,

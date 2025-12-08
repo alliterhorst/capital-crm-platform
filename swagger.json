@@ -149,7 +149,7 @@
         },
         "summary": "Realizar login e obter token JWT",
         "tags": [
-          "Autenticação"
+          "auth"
         ]
       }
     },
@@ -204,7 +204,7 @@
         ],
         "summary": "Obter dados do usuário logado",
         "tags": [
-          "Autenticação"
+          "auth"
         ]
       }
     },
@@ -316,7 +316,7 @@
         ],
         "summary": "Atualizar nome do usuário logado",
         "tags": [
-          "Usuários"
+          "users"
         ]
       }
     },
@@ -428,7 +428,7 @@
         ],
         "summary": "Cadastrar novo cliente",
         "tags": [
-          "Clientes"
+          "clients"
         ]
       },
       "get": {
@@ -452,6 +452,17 @@
             "schema": {
               "default": 10,
               "type": "number"
+            }
+          },
+          {
+            "name": "selected",
+            "required": false,
+            "in": "query",
+            "description": "Filtrar apenas clientes selecionados",
+            "schema": {
+              "default": false,
+              "example": false,
+              "type": "boolean"
             }
           },
           {
@@ -555,7 +566,7 @@
         ],
         "summary": "Listar todos os clientes ativos",
         "tags": [
-          "Clientes"
+          "clients"
         ]
       }
     },
@@ -685,7 +696,7 @@
         ],
         "summary": "Buscar detalhes de um cliente por ID",
         "tags": [
-          "Clientes"
+          "clients"
         ]
       },
       "patch": {
@@ -823,7 +834,7 @@
         ],
         "summary": "Atualizar dados financeiros ou cadastrais do cliente",
         "tags": [
-          "Clientes"
+          "clients"
         ]
       },
       "delete": {
@@ -951,7 +962,7 @@
         ],
         "summary": "Remover cliente (Soft Delete)",
         "tags": [
-          "Clientes"
+          "clients"
         ]
       }
     },
@@ -1040,7 +1051,7 @@
         ],
         "summary": "Obter indicadores gerais e clientes mais populares",
         "tags": [
-          "Métricas & Dashboard"
+          "metrics"
         ]
       }
     },
@@ -1132,11 +1143,11 @@
         ],
         "summary": "Obter dados de crescimento mensal para gráficos",
         "tags": [
-          "Métricas & Dashboard"
+          "metrics"
         ]
       }
     },
-    "/api/health": {
+    "/api/healthz": {
       "get": {
         "operationId": "checkHealth",
         "parameters": [
@@ -1333,7 +1344,7 @@
         },
         "summary": "Verificar estado da aplicação (Liveness/Readiness)",
         "tags": [
-          "Health & Monitoring"
+          "healthz"
         ]
       }
     }
@@ -1515,6 +1526,12 @@
             "type": "number",
             "description": "Valor da empresa do cliente",
             "example": 1000000.5
+          },
+          "isSelected": {
+            "type": "boolean",
+            "description": "Define se o cliente está selecionado",
+            "example": false,
+            "default": false
           }
         },
         "required": [
@@ -1611,6 +1628,12 @@
             "type": "number",
             "description": "Valor da empresa do cliente",
             "example": 1000000.5
+          },
+          "isSelected": {
+            "type": "boolean",
+            "description": "Define se o cliente está selecionado",
+            "example": false,
+            "default": false
           }
         }
       },

@@ -1,0 +1,76 @@
+export const MESSAGES_HELPER = {
+  GLOBAL: {
+    APP_NAME: 'Capital CRM',
+    GENERIC_ERROR: 'Ocorreu um erro inesperado. Tente novamente.',
+    CONNECTION_ERROR: 'Erro de conexão. Verifique sua internet.',
+    UNKNOWN_ERROR: 'Erro desconhecido. Por favor, contate o suporte.',
+  },
+  SIDEBAR: {
+    DASHBOARD: 'Dashboard',
+    CLIENTS: 'Clientes',
+    LOGOUT: 'Sair',
+    LOGOUT_SR: 'Sair da aplicação',
+  },
+  MENU: {
+    HOME: 'Home',
+    CLIENTS: 'Clientes',
+    SELECTED_CLIENTS: 'Clientes selecionados',
+    LOGOUT: 'Sair',
+  },
+  HEADERS: {
+    WELCOME: 'Olá,',
+    USER_HIGHLIGHT: 'Usuário!',
+  },
+  AUTH: {
+    LOGIN_TITLE: 'Acessar plataforma',
+    LOGIN_SUBTITLE: 'Gerencie seus clientes e métricas em um só lugar',
+    EMAIL_PLACEHOLDER: 'Digite seu e-mail',
+    PASSWORD_PLACEHOLDER: 'Digite sua senha',
+    BUTTON_LOGIN: 'Entrar',
+    BUTTON_LOGGING_IN: 'Entrando...',
+    SUCCESS_LOGIN: 'Login realizado com sucesso!',
+    ERROR_LOGIN: 'Falha ao realizar login. Verifique suas credenciais.',
+  },
+  DASHBOARD: {
+    TITLE: 'Dashboard',
+    METRICS: {
+      TOTAL_CLIENTS: 'Total de Clientes',
+      VIEWS: 'Visualizações',
+      REVENUE: 'Receita Mensal',
+      ACTIVE_SUBS: 'Assinaturas Ativas',
+    },
+    COMPARISONS: {
+      VS_LAST_MONTH: 'em relação ao mês passado',
+      SINCE_LAST_HOUR: 'desde a última hora',
+      SINCE_YESTERDAY: 'desde ontem',
+    },
+  },
+  CLIENTS: {
+    TITLE: 'Clientes',
+    LIST_SUBTITLE: 'Gerencie a carteira de clientes da empresa',
+    BUTTON_NEW: 'Novo Cliente',
+    BUTTON_EDIT: 'Editar',
+    BUTTON_DELETE: 'Excluir',
+    BUTTON_SAVE: 'Salvar',
+    BUTTON_CANCEL: 'Cancelar',
+    FORM: {
+      NAME_PLACEHOLDER: 'Digite o nome do cliente',
+      SALARY_PLACEHOLDER: 'Digite o salário',
+      COMPANY_VALUE_PLACEHOLDER: 'Digite o valor da empresa',
+      UPDATED_AT_LABEL: 'Última atualização',
+    },
+    FEEDBACK: {
+      CREATE_SUCCESS: 'Cliente criado com sucesso!',
+      UPDATE_SUCCESS: 'Cliente atualizado com sucesso!',
+      DELETE_SUCCESS: 'Cliente removido com sucesso!',
+    },
+  },
+  VALIDATION: {
+    REQUIRED_FIELD: 'Este campo é obrigatório',
+    INVALID_EMAIL: 'Insira um e-mail válido',
+    MIN_PASSWORD: 'A senha deve ter no mínimo 6 caracteres',
+    REQUIRED_NAME: 'O nome é obrigatório',
+    REQUIRED_SALARY: 'O salário é obrigatório',
+    REQUIRED_COMPANY_VALUE: 'O valor da empresa é obrigatório',
+  },
+} as const;

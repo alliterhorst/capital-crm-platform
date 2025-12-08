@@ -24,6 +24,9 @@ export class Client {
   @Column({ type: 'decimal', precision: 15, scale: 2 })
   companyValue!: number;
 
+  @Column({ type: 'boolean', default: false })
+  isSelected!: boolean;
+
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   createdAt!: Date;
 

@@ -1,6 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { Client } from './entities/client.entity';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
@@ -32,12 +32,19 @@ export class ClientsService {
   }
 
   async findAll(paginationDto: PaginationDto): Promise<PaginatedClientsResultDto> {
-    const { page = 1, limit = 10 } = paginationDto;
+    const { page = 1, limit = 10, selected } = paginationDto;
     const skip = (page - 1) * limit;
 
     this.logger.log(`Fetching clients page ${page} with limit ${limit}`);
 
+    const where: FindOptionsWhere<Client> = {};
+
+    if (selected !== undefined) {
+      where.isSelected = selected;
+    }
+
     const [data, total] = await this.clientRepository.findAndCount({
+      where,
       order: { createdAt: 'DESC' },
       take: limit,
       skip: skip,

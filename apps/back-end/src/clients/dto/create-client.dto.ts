@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString, Min } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 import { MESSAGES_HELPER } from '../../common/constants/messages.helper';
 
 export class CreateClientDto {
@@ -19,4 +19,13 @@ export class CreateClientDto {
   @IsNumber({}, { message: MESSAGES_HELPER.VALIDATION.IS_NUMBER })
   @Min(0, { message: MESSAGES_HELPER.VALIDATION.MIN_LENGTH(0) })
   companyValue!: number;
+
+  @ApiPropertyOptional({
+    description: 'Define se o cliente está selecionado',
+    example: false,
+    default: false,
+  })
+  @IsOptional()
+  @IsBoolean()
+  isSelected?: boolean;
 }

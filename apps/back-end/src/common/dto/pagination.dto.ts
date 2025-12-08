@@ -1,6 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import { IsInt, IsOptional, Min } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsBoolean, IsInt, IsOptional, Min } from 'class-validator';
 import { MESSAGES_HELPER } from '../constants/messages.helper';
 
 export class PaginationDto {
@@ -20,4 +20,14 @@ export class PaginationDto {
   @IsInt({ message: MESSAGES_HELPER.VALIDATION.IS_INT })
   @Min(1, { message: MESSAGES_HELPER.VALIDATION.MIN_VALUE(1) })
   limit?: number = 10;
+
+  @ApiPropertyOptional({
+    description: 'Filtrar apenas clientes selecionados',
+    example: false,
+    default: false,
+  })
+  @IsOptional()
+  @Transform(({ value }) => value === 'true' || value === true)
+  @IsBoolean()
+  selected?: boolean;
 }

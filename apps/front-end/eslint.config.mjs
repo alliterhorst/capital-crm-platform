@@ -5,8 +5,10 @@ export default [
   ...baseConfig,
   ...nx.configs['flat/react'],
   {
+    ignores: ['./src/shared/*/generated/**'],
+  },
+  {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
-    // Override or add rules here
     rules: {},
   },
 ];
