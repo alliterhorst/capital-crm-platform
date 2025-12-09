@@ -1,0 +1,21 @@
+services:
+  web:
+    build:
+      context: ../..
+      dockerfile: apps/front-end/Dockerfile
+    container_name: capital-crm-frontend
+    ports:
+      - '5173:5173'
+    environment:
+      PORT: ${PORT}
+      VITE_API_URL: ${VITE_API_URL}
+      VITE_APP_ENV: ${VITE_APP_ENV}
+      VITE_API_MOCKING: ${VITE_API_MOCKING}
+      VITE_LOG_LEVEL: ${VITE_LOG_LEVEL}
+    networks:
+      - frontend-network
+    restart: unless-stopped
+
+networks:
+  frontend-network:
+    driver: bridge

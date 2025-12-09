@@ -1,0 +1,70 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/back-end/**'
+      - 'libs/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'nx.json'
+      - 'tsconfig.base.json'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/back-end/**'
+      - 'libs/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'nx.json'
+      - 'tsconfig.base.json'
+
+jobs:
+  backend-ci:
+    runs-on: ubuntu-latest
+
+    env:
+      NODE_ENV: test
+      PORT: 3000
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_USERNAME: admin
+      DB_PASSWORD: admin
+      DB_DATABASE: capital_crm_db
+      ADMIN_EMAIL: admin@capital.com
+      ADMIN_PASSWORD: admin123
+      JWT_SECRET: UmaSenhaMuitoSeguraESecreta123!
+      JWT_EXPIRES_IN: 1d
+      LOG_PRETTY: true
+      SEED_MOCK_DATA: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint backend
+        run: npx nx lint back-end
+        continue-on-error: true
+
+      - name: Test backend
+        run: npx nx test back-end --pass-with-no-tests
+
+      - name: Build backend (production)
+        run: npx nx build back-end --configuration=production
+
+      - name: Build backend Docker image
+        run: |
+          docker build \
+            -f apps/back-end/Dockerfile \
+            -t capital-crm-backend-ci \
+            .

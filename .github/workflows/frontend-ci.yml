@@ -1,0 +1,63 @@
+name: Frontend CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/front-end/**'
+      - 'libs/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'nx.json'
+      - 'tsconfig.base.json'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/front-end/**'
+      - 'libs/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'nx.json'
+      - 'tsconfig.base.json'
+
+jobs:
+  frontend-ci:
+    runs-on: ubuntu-latest
+
+    env:
+      NODE_ENV: test
+      PORT: 5173
+      VITE_API_URL: http://localhost:3000/api
+      VITE_APP_ENV: test
+      VITE_API_MOCKING: true
+      VITE_LOG_LEVEL: info
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint frontend
+        run: npx nx lint front-end
+        continue-on-error: true
+
+      - name: Test frontend
+        run: npx nx test front-end --pass-with-no-tests
+
+      - name: Build frontend (production)
+        run: npx nx build front-end --configuration=production
+
+      - name: Build frontend Docker image
+        run: |
+          docker build \
+            -f apps/front-end/Dockerfile \
+            -t capital-crm-frontend-ci \
+            .
