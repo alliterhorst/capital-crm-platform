@@ -1,47 +1,58 @@
 # Capital CRM - Nx Monorepo
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Nx-Monorepo-blueviolet" />
-  <img src="https://img.shields.io/badge/TypeScript-Strict-informational" />
-  <img src="https://img.shields.io/badge/NestJS-API-red" />
-  <img src="https://img.shields.io/badge/React-Vite-blue" />
-  <img src="https://img.shields.io/badge/Docker-Compose-2496ED" />
-  <img src="https://img.shields.io/badge/CI-CD-success" />
-</p>
+<div align="center">
+
+  ![Nx](https://img.shields.io/badge/Nx-Monorepo-blueviolet)
+  ![TypeScript](https://img.shields.io/badge/TypeScript-Strict-informational)
+  ![NestJS](https://img.shields.io/badge/NestJS-API-red)
+  ![React](https://img.shields.io/badge/React-Vite-blue)
+  ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED)
+  ![CI/CD](https://img.shields.io/badge/CI-CD-success)
+
+  <br />
+
+  [**🔗 Open Live Demo**](https://capital-crm-platform.pages.dev/)
+https://capital-crm-platform.pages.dev/
+</div>
 
 ---
 
 ## 📌 Table of Contents
 
-- [Capital CRM - Nx Monorepo](#capital-crm---nx-monorepo)
-  - [📌 Table of Contents](#-table-of-contents)
-  - [🧭 Executive Summary](#-executive-summary)
-    - [Key Objectives](#key-objectives)
-  - [☁️ Cloud-Native Architecture](#️-cloud-native-architecture)
-  - [🧰 Technology Stack](#-technology-stack)
-  - [🧩 Development Workflow](#-development-workflow)
-    - [Requirements](#requirements)
-    - [Quick Start](#quick-start)
-    - [Default Services](#default-services)
-  - [🐳 Docker Orchestration](#-docker-orchestration)
-  - [🧩 Nx Targets](#-nx-targets)
-  - [🔍 Observability](#-observability)
-  - [⚙️ CI/CD](#️-cicd)
-  - [📁 Project Structure](#-project-structure)
+- [Executive Summary](#-executive-summary)
+- [📂 System Modules](#-system-modules)
+- [☁️ Cloud-Native Architecture](#️-cloud-native-architecture)
+- [🧰 Technology Stack](#-technology-stack)
+- [🚀 How to Run (Docker-First)](#-how-to-run-docker-first)
+- [📁 Project Structure](#-project-structure)
+- [🔍 Observability](#-observability)
 
 ---
 
 ## 🧭 Executive Summary
 
-Capital CRM is a high-performance platform built to support enterprise client intelligence, valuation tracking, and secure audit history. This project demonstrates a production-ready application implemented using an **Nx Monorepo**, enabling consistent, scalable, and automated full‑stack development.
+**Capital CRM** is a high-performance platform designed for enterprise client intelligence, valuation tracking, and secure audit history.
+
+This project demonstrates a **production-ready** application implemented within an **Nx Monorepo**, ensuring a unified full-stack development experience, scalability, and shared tooling.
 
 ### Key Objectives
+- **Unified Monorepo:** Single dependency graph for both frontend and backend.
+- **Code Quality:** Strict linting and automatic formatting (Prettier/ESLint).
+- **Consistency:** Containerized execution via Docker Compose for dev/prod parity.
+- **DevOps:** Segmented CI/CD pipelines based on change scope (Nx Affected).
 
-- Unified frontend and backend dependency graph with Nx
-- Strict linting and formatting rules enforced on commit and CI
-- Consistent containerized execution with Docker Compose
-- Structured metrics, logs, and health endpoints
-- Segmented CI/CD pipelines based on changed scopes
+---
+
+## 📂 System Modules
+
+Detailed documentation on implementation, endpoints, and visual components can be found in the specific READMEs for each application:
+
+| Application | Description | Key Tech & Features | Documentation |
+| :--- | :--- | :--- | :--- |
+| **Frontend** | High-performance SPA with modern UI and state management. | **React, Vite, ShadCN, Orval**.<br>Includes **MSW (Mock Service Worker)** for full backend emulation directly in the browser. | [📖 Read Docs](./apps/front-end/README.md) |
+| **Backend** | Scalable, secure, and domain-driven REST API. | **NestJS, TypeORM, PostgreSQL**.<br>Features comprehensive Swagger docs and metric instrumentation. | [📖 Read Docs](./apps/back-end/README.md) |
+
+> **💡 Frontend Note:** The Frontend project is equipped with [MSW](https://mswjs.io/) to intercept requests at the network level. This allows developers to build and test features even if the backend services are offline. Check the [Frontend README](./apps/front-end/README.md#local-api-mocking-msw) for more details.
 
 ---
 
@@ -49,7 +60,7 @@ Capital CRM is a high-performance platform built to support enterprise client in
 
 ```mermaid
 graph TD
-    %% Estilos
+    %% Styles
     classDef future stroke-dasharray: 5 5, fill:#f9f9f9, stroke:#999;
     classDef security fill:#ffe6cc, stroke:#d79b00;
     classDef ci fill:#e1f5fe, stroke:#01579b;
@@ -88,32 +99,32 @@ graph TD
             subgraph Data_Layer [Private Subnet - Data]
                 RDS[(RDS PostgreSQL)]:::aws
 
-                %% Redis marcado como futuro
+                %% Redis marked as future
                 Redis[(ElastiCache Redis<br/>*Token Store*)]:::future
             end
         end
     end
 
-    %% Fluxos do Front-End
+    %% Frontend Flows
     User -->|1. HTTPS Request Static Assets| WAF_CF
     WAF_CF --> CF
     CF -->|Origin Read| S3
 
-    %% Fluxo de Invalidação de Cache
+    %% Cache Invalidation Flow
     Pipeline -->|2. Upload Assets| S3
     Pipeline -.->|3. Invalidate Cache| CF
 
-    %% Fluxos do Back-End (API)
+    %% Backend Flows (API)
     User -->|4. API Calls HTTPS/JSON| WAF_ALB
     WAF_ALB --> ALB
     ALB --> Ingress
     Ingress --> API
     API -->|Read/Write| RDS
 
-    %% Fluxo Futuro
+    %% Future Flow
     API -.->|Future: Validate/Store Tokens| Redis
 
-    %% Observabilidade
+    %% Observability
     subgraph Observability [Observability Plane]
         CW[CloudWatch]
         Xray[X-Ray Traces]
@@ -121,120 +132,108 @@ graph TD
 
     API -.-> CW
     API -.-> Xray
-```
+````
 
-**Notes**
+**Architecture Notes**
 
-- **Frontend (React SPA)**
-  - Built as a static bundle and deployed to an **S3 bucket**.
-  - Served globally through **CloudFront**, improving latency and enabling HTTP caching.
-  - A future CI/CD pipeline can trigger **CloudFront invalidation** after each deploy (e.g. `/*` or at least `index.html`) to ensure users always receive the latest version.
+  - **Frontend:** Static SPA served via S3 + CloudFront for low global latency.
+  - **Backend:** NestJS running on EKS (Kubernetes), exposed via ALB.
+  - **Data:** PostgreSQL (RDS) as the source of truth.
+  - **Observability:** CloudWatch and X-Ray for logs and distributed tracing.
 
-- **Backend (NestJS API on EKS)**
-  - Exposed via **Ingress Controller** within EKS and published externally through an **ALB**.
-  - All `/api/*` calls from the SPA are proxied by CloudFront to the ALB over HTTPS.
-
-- **Data layer**
-  - **PostgreSQL (Amazon RDS)** stores system of record data.
-  - **ElastiCache Redis (`TokenCache`)** is documented as a **planned/optional enhancement** for:
-    - storing active JWTs / refresh tokens
-    - supporting token blacklisting and forced logout flows
-    - reducing database hits for session-related checks
-
-- **Observability**
-  - API logs and custom metrics are centralized in **CloudWatch**.
-  - Distributed tracing is handled via **AWS X-Ray**, allowing correlation between API calls and downstream database/cache operations.
-
-> ⚠️ **Implementation status**
->
-> - The core **API + RDS** flow and **frontend application** are implemented.
-> - **CloudFront + S3 hosting model** and **ElastiCache Redis token cache** are described here as the **target architecture** and may still be **pending implementation** in the current environment.
-
----
+-----
 
 ## 🧰 Technology Stack
 
-| Domain   | Technology       | Purpose                                     |
-| -------- | ---------------- | ------------------------------------------- |
-| Monorepo | Nx               | Caching, computation graph, affected builds |
-| Backend  | NestJS           | Modular architecture, DI, TypeScript safety |
-| Frontend | React + Vite     | High‑performance SPA with Tailwind/ShadCN   |
-| ORM      | TypeORM          | Migrations, schema typing, domain models    |
-| Database | PostgreSQL       | Financial integrity and reporting accuracy  |
-| Runtime  | Docker + Compose | Dev, CI, and production parity              |
+The project leverages the best of the modern JavaScript/TypeScript ecosystem.
 
----
+| Domain | Technology | Details |
+| :--- | :--- | :--- |
+| **Monorepo** | **Nx** | Computation caching, task runner, dependency graph. |
+| **Language** | **TypeScript** | Strict mode enabled across the entire repository. |
+| **Frontend** | **React + Vite** | Optimized performance, instant Hot Module Replacement. |
+| **Mocking** | **MSW** | **Mock Service Worker** for network-level API interception. |
+| **UI Kit** | **Tailwind + ShadCN** | Consistent and customizable design system. |
+| **API Client** | **Orval** | Auto-generated types and hooks from Backend Swagger. |
+| **Backend** | **NestJS** | Modular architecture, Dependency Injection. |
+| **Database** | **PostgreSQL** | Financial integrity and relational data. |
+| **ORM** | **TypeORM** | Migrations, schema typing, and domain models. |
+| **Infra** | **Docker** | Local orchestration via Docker Compose. |
 
-## 🧩 Development Workflow
+-----
 
-### Requirements
+## 🚀 How to Run (Docker-First)
 
-- Docker
-- Docker Compose
+You can run the entire stack **without installing any node dependencies** locally. We utilize specific Nx targets that trigger Docker Compose configurations located inside each application folder.
 
-### Quick Start
+### Prerequisites
 
-```bash
-docker compose up --build
-```
+  - Docker & Docker Compose
+  - Nx CLI (optional, but recommended: `npm install -g nx`)
 
-> The first run seeds the database and provisions the initial admin user.
+### Running the Full Stack
 
-### Default Services
+Execute the following commands in your terminal to spin up the Backend and Frontend environments independently using Docker:
 
-- Frontend: [http://localhost:5173](http://localhost:5173)
-- API: [http://localhost:3000/docs](http://localhost:3000/docs)
-- Metrics: [http://localhost:3000/api/metrics](http://localhost:3000/api/metrics)
+#### 1\. Start the Backend (API + Database)
 
----
-
-## 🐳 Docker Orchestration
-
-Each application defines its own docker‑compose workflow, allowing isolated development and Nx‑controlled execution.
-
-Example: `apps/back-end/docker-compose.yml`
-
----
-
-## 🧩 Nx Targets
-
-> Nx targets enable isolated orchestration of Docker services via CLI.
+This command builds the API container, starts PostgreSQL, runs migrations, and seeds the database automatically.
 
 ```bash
-nx run back-end:docker-up
-nx run back-end:docker-down
-nx run back-end:docker-logs
+npx nx run back-end:docker-up
 ```
 
-Common scripts include database bootstrapping, rebuild, logs, migrations, and seed operations.
+> API will be available at: [http://localhost:3000/docs](https://www.google.com/search?q=http://localhost:3000/docs)
 
----
+#### 2\. Start the Frontend
 
-## 🔍 Observability
+This command builds the frontend container and serves it via Nginx or a dev server.
 
-- JSON structured logging using `nestjs-pino`
-- `/healthz` probe endpoint (Kubernetes‑compatible)
-- `/metrics` exposure in Prometheus format
+```bash
+npx nx run front-end:docker-up
+```
 
----
+> Application will be available at: [http://localhost:5173](https://www.google.com/search?q=http://localhost:5173)
 
-## ⚙️ CI/CD
+### Why this approach?
 
-- Affected‑based pipelines (Frontend / Backend) triggered independently
-- Unit tests required prior to merge
-- Docker multi‑stage build validation
-- Lint enforcement rejecting `any` usage
+  - **Zero Configuration:** No need to run `npm install` on the root if you just want to run the app.
+  - **Isolation:** Each app manages its own container lifecycle.
+  - **Consistency:** Ensures you are running exactly the same environment as production.
 
----
+-----
 
 ## 📁 Project Structure
 
-```
+Below are the main directories of the Monorepo:
+
+```text
 capital-crm/
-├─ apps/
-│  ├─ back-end/
-│  ├─ front-end/
-└─ nx.json
+├── apps/
+│   ├── back-end/          # NestJS API (Controllers, Services, Docker Compose)
+│   │   ├── src/
+│   │   ├── docker-compose.yml
+│   │   └── README.md      # ⬅️ Backend Specific Docs
+│   │
+│   └── front-end/         # React SPA (Features, Pages, Docker Compose)
+│       ├── src/
+│       ├── docker-compose.yml
+│       └── README.md      # ⬅️ Frontend Specific Docs
+│
+├── libs/                  # Shared libraries (DTOs, Utils - Optional)
+├── tools/                 # Automation scripts and generators
+├── nx.json                # Monorepo configuration
+└── README.md              # This file
 ```
 
----
+-----
+
+## 🔍 Observability
+
+The system is pre-configured with instrumentation for production environments:
+
+  - **Logs:** Structured JSON (`nestjs-pino`) for easy ingestion into CloudWatch/Datadog.
+  - **Health Checks:** `/healthz` endpoint compatible with Kubernetes Probes.
+  - **Metrics:** `/metrics` endpoint exposing VM and application data in Prometheus format.
+
+-----
